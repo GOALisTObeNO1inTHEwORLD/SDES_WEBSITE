@@ -21,7 +21,7 @@ export default function Hero() {
       id="hero"
       ref={containerRef}
       style={{ opacity, scale, background: 'transparent' }}
-      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-32 pb-20"
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden pt-32 pb-20"
     >
       <ParticleCanvas
         mode="converge"

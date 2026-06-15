@@ -82,17 +82,28 @@ export default function CanvasSequence({
     const imgRatio = img.naturalWidth / img.naturalHeight;
     const canvasRatio = canvasWidth / canvasHeight;
 
+    const isMobilePortrait = canvasRatio < 0.8;
+
     let drawWidth: number, drawHeight: number, offsetX: number, offsetY: number;
-    if (canvasRatio > imgRatio) {
+    if (isMobilePortrait) {
+      // On mobile portrait, fit width so the entire 3D text is visible (object-contain behavior)
       drawWidth = canvasWidth;
       drawHeight = canvasWidth / imgRatio;
       offsetX = 0;
       offsetY = (canvasHeight - drawHeight) / 2;
     } else {
-      drawHeight = canvasHeight;
-      drawWidth = canvasHeight * imgRatio;
-      offsetX = (canvasWidth - drawWidth) / 2;
-      offsetY = 0;
+      // Standard object-cover for desktop
+      if (canvasRatio > imgRatio) {
+        drawWidth = canvasWidth;
+        drawHeight = canvasWidth / imgRatio;
+        offsetX = 0;
+        offsetY = (canvasHeight - drawHeight) / 2;
+      } else {
+        drawHeight = canvasHeight;
+        drawWidth = canvasHeight * imgRatio;
+        offsetX = (canvasWidth - drawWidth) / 2;
+        offsetY = 0;
+      }
     }
 
     // Draw synchronously because GSAP's onUpdate is already inside a requestAnimationFrame!
@@ -107,13 +118,13 @@ export default function CanvasSequence({
         const dpr = Math.min(window.devicePixelRatio, 1.5); 
         const rect = containerRef.current.getBoundingClientRect();
         
-        // Set canvas buffer sizes to physical pixels
+        // Use container rect instead of window.innerHeight to prevent mobile address bar jumping
         canvasRef.current.width = rect.width * dpr;
-        canvasRef.current.height = (window.innerHeight - 56) * dpr;
+        canvasRef.current.height = rect.height * dpr;
         
         // CSS sizes are in logical CSS pixels
         canvasRef.current.style.width = `${rect.width}px`;
-        canvasRef.current.style.height = `${window.innerHeight - 56}px`;
+        canvasRef.current.style.height = `${rect.height}px`;
 
         renderFrame(renderFrameRef.current.frame);
       }
@@ -145,7 +156,7 @@ export default function CanvasSequence({
   }, { scope: containerRef, dependencies: [frameCount, pinDuration] });
 
   return (
-    <div ref={containerRef} className="relative w-full overflow-hidden bg-black" style={{ height: 'calc(100vh - 56px)' }}>
+    <div ref={containerRef} className="relative w-full overflow-hidden bg-black" style={{ height: 'calc(100svh - 56px)' }}>
       
       {loaded < 100 && (
         <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 font-mono tracking-widest text-sm opacity-50 ${isDark ? 'text-white' : 'text-slate-900'}`}>

@@ -68,7 +68,7 @@ export default function SetupGuidePage() {
     <div style={{
       background: 'transparent',
       color: isDark ? '#ffffff' : '#1e293b',
-      minHeight: '100vh',
+      minHeight: '100svh',
       fontFamily: "'Inter', system-ui, sans-serif",
     }}>
       <Navbar />

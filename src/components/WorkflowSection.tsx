@@ -29,7 +29,7 @@ export default function WorkflowSection() {
   return (
     <section style={{
       position: 'relative',
-      minHeight: '100vh',
+      minHeight: '100svh',
       width: '100%',
       display: 'flex',
       flexDirection: 'column',

@@ -35,7 +35,7 @@ function TextSection({ badge, badgeColor, title, accentWord, accentColor, paragr
 
   return (
     <section id={id} style={{
-      position: 'relative', minHeight: '100vh', width: '100%',
+      position: 'relative', minHeight: '100svh', width: '100%',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       padding: '120px 6vw', background: 'transparent',
     }}>
@@ -177,7 +177,7 @@ function AppContent() {
   return (
     <main style={{
       background: 'transparent',
-      minHeight: '100vh', position: 'relative', overflowX: 'hidden',
+      minHeight: '100svh', position: 'relative', overflowX: 'hidden',
     }}>
       <Navbar />
       <GlobalBackground />
