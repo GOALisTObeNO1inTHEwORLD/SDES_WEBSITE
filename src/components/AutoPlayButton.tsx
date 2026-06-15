@@ -55,12 +55,12 @@ export default function AutoPlayButton({ targetSectionId }: AutoPlayButtonProps)
   // Stop auto-play when user manually scrolls
   useEffect(() => {
     let userScrolling = false;
-    let timeout: ReturnType<typeof setTimeout>;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
 
     const onWheel = () => {
       userScrolling = true;
       setPlaying(false);
-      clearTimeout(timeout);
+      if (timeout) clearTimeout(timeout);
     };
 
     const onTouch = () => {
