@@ -131,8 +131,9 @@ export default function CanvasSequence({
         trigger: containerRef.current,
         start: 'top 56px',
         end: `+=${pinDuration}`,
-        scrub: 0.15, // Tiny scrub smooths out chunky mouse wheel ticks perfectly
+        scrub: 1, // 1-second scrub drastically smooths out chunky mouse wheel ticks, preventing "stuck/stutter" feeling
         pin: true,
+        pinType: 'fixed', // Prevent jitter caused by transform pinning
       }
     });
 
