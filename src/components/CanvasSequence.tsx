@@ -95,17 +95,16 @@ export default function CanvasSequence({
       offsetY = 0;
     }
 
-    cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => {
-      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-    });
+    // Draw synchronously because GSAP's onUpdate is already inside a requestAnimationFrame!
+    // Wrapping it in another rAF causes double-deferral, leading to dropped/skipped frames during fast scrolling.
+    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
   };
 
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current && containerRef.current) {
-        // Cap DPR to 1 to drastically improve canvas drawing performance
-        const dpr = 1; 
+        // Cap DPR to 1.5: 1 is too blurry on Retina screens ("no clarity"), but 2+ causes GPU stutter.
+        const dpr = Math.min(window.devicePixelRatio, 1.5); 
         const rect = containerRef.current.getBoundingClientRect();
         
         // Set canvas buffer sizes to physical pixels
